@@ -45,7 +45,7 @@ view\controllerName\index
 <br/>
 @ViewBag.Title
 ```
-結果兩個變數被視為同一個
+結果兩個變數被視為同一個<br/>
 <img width="675" height="218" alt="image" src="https://github.com/user-attachments/assets/e637c555-66a4-49a4-b7d1-dcc55a29e829" />
 ### 方便性
 ViewData 跟 ViewBag 不用事先宣告，可以直接使用，但會造成程式碼雜亂不好維護，所以要少用，或用在簡單的地方，例如<title/>
