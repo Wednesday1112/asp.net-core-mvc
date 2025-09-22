@@ -1,39 +1,14 @@
-# Example headings
-
-## Sample Section
-
-## This'll be a _Helpful_ Section About the Greek Letter Θ!
-A heading containing characters not allowed in fragments, UTF-8 characters, two consecutive spaces between the first and second words, and formatting.
-
-## This heading is not unique in the file
-
-TEXT 1
-
-## This heading is not unique in the file
-
-TEXT 2
-
-# Links to the example headings above
-
-Link to the sample section: [Link Text](#sample-section).
-
-Link to the helpful section: [Link Text](#thisll-be-a-helpful-section-about-the-greek-letter-Θ).
-
-Link to the first non-unique section: [Link Text](#this-heading-is-not-unique-in-the-file).
-
-Link to the second non-unique section: [Link Text](#this-heading-is-not-unique-in-the-file-1).
-
 # asp.net core mvc 自學紀錄
-- View(#view)
-  - ViewData(#viewdata)
-  - ViewBag(viewdbag)
-  - 他們同個變數會共用(#他們同個變數會共用)
-  - 方便性(#方便性)
-  - 生命週期(#生命週期)
-  - TempData(#tempdata)
-  - 架構的執行順序(#架構的執行順序)
-  - _ViewStart(#viewstart)
-- Razor 基本語法(#razor-基本語法)
+- [View](#view)
+  - [ViewData](#viewdata)
+  - [ViewBag](viewdbag)
+  - [他們同個變數會共用](#他們同個變數會共用)
+  - [方便性](#方便性)
+  - [生命週期](#生命週期)
+  - [TempData](#tempdata)
+  - [架構的執行順序](#架構的執行順序)
+  - [_ViewStart](#viewstart)
+- [Razor 基本語法](#razor-基本語法)
 ## View
 ### ViewData
 controller
