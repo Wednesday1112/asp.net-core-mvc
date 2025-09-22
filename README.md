@@ -50,7 +50,7 @@ view\controllerName\index
 ### 方便性
 ViewData 跟 ViewBag 不用事先宣告，可以直接使用，但會造成程式碼雜亂不好維護，所以要少用，或用在簡單的地方，例如<title/><br/>
 ! 注意 ! ViewData 稍微嚴謹一點
-```
+```cs
 public IActionResult Index()
 {
     ViewData["number1"] = 10;
