@@ -2,7 +2,7 @@
 ## View
 ### ViewData
 controller
-```c#
+```cs
 public IActionResult index()
 {
   ViewData["要傳的變數"] = 要傳得值;
@@ -11,12 +11,12 @@ public IActionResult index()
 }
 ```
 view\controllerName\index
-```c#
+```cs
 @ViewData["要傳的變數"] //Razor語法，想要在這用c#語法或變數時要加@
 ```
 ### ViewBag
 controller
-```c#
+```cs
 public IActionResult index()
 {
   ViewBag.要傳的變數 = 要傳得值;
@@ -25,12 +25,12 @@ public IActionResult index()
 }
 ```
 view\controllerName\index
-```c#
+```cs
 @ViewBag.要傳的變數 //Razor語法，想要在這用c#語法或變數時要加@
 ```
 ### 他們同個變數會共用
 controller
-```c#
+```cs
 public IActionResult index()
 {
   ViewData["title"] = "這是 ViewDate 設定的值";
