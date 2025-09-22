@@ -1,14 +1,14 @@
 # asp.net core mvc 自學紀錄
--View(#view)
-  -ViewData(#viewdata)
-  -ViewBag(viewdbag)
-  -他們同個變數會共用(#他們同個變數會共用)
-  -方便性(#方便性)
-  -生命週期(#生命週期)
-  -TempData(#tempdata)
-  -架構的執行順序(#架構的執行順序)
-  -_ViewStart(#viewstart)
--Razor 基本語法(#razor-基本語法)
+- View(#view)
+  - ViewData(#viewdata)
+  - ViewBag(viewdbag)
+  - 他們同個變數會共用(#他們同個變數會共用)
+  - 方便性(#方便性)
+  - 生命週期(#生命週期)
+  - TempData(#tempdata)
+  - 架構的執行順序(#架構的執行順序)
+  - _ViewStart(#viewstart)
+- Razor 基本語法(#razor-基本語法)
 ## View
 ### ViewData
 controller
