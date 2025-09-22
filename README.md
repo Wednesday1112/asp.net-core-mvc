@@ -40,7 +40,7 @@ public IActionResult index()
 }
 ```
 view\controllerName\index
-```c#
+```html
 @ViewData["title"]
 <b\>
 @ViewBag.Title
