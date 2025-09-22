@@ -1,4 +1,4 @@
-# asp.net-core-mvc
+# asp.net core mvc 自學紀錄
 ## View
 ### ViewData
 controller
