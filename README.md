@@ -40,9 +40,9 @@ public IActionResult index()
 }
 ```
 view\controllerName\index
-```html
+```cshtml
 @ViewData["title"]
-<b\>
+<br/>
 @ViewBag.Title
 ```
 結果兩個變數被視為同一個
