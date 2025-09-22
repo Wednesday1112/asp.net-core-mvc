@@ -172,7 +172,7 @@ else
     <div>number 小於等於 0</div>
 }
 ```
-<text>沒有留下痕跡<br/>
+text 沒有留下痕跡<br/>
 <img width="1599" height="643" alt="image" src="https://github.com/user-attachments/assets/2c5e3c21-2139-4efb-bb7f-b2b3e30db1af" /><br/>
 如果要在畫面上打小老鼠
 ```cshtml
