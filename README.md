@@ -18,9 +18,28 @@
 ### Program.cs (路由)
 pattern 是網址路徑，controller 名字 / view 名字 / ID，有等於的代表胡果是這個就可以省略，圖中 controller = Home 代表 contrler 名字是 Home 就可以省略，後面 view 一樣意思，ID 的問號代表可有可無，沒有打上 ID，網址一樣可用，ID 是錯的也可用<br/>
 <img width="918" height="449" alt="image" src="https://github.com/user-attachments/assets/0566413c-b78a-4bc7-90fa-06bb8c96fe2d" /><br/>
-下面兩張圖是一樣的網頁<br/>
+下面兩張圖是一樣的網頁(注意網址)<br/>
 <img width="1316" height="459" alt="image" src="https://github.com/user-attachments/assets/dbccbdc9-6597-4cd9-80a8-9cf6b9d2f212" /><br/>
 <img width="1230" height="436" alt="image" src="https://github.com/user-attachments/assets/2bee10d8-4a7c-4a9b-9d76-3c083bbcd997" />
+## Database
+使用套件：
+- Microsoft.EntityFrameworkCore.SqlServer
+- Microsoft.EntityFrameworkCore.Tools
+### Data First
+在套件管理種控台輸入以下指令以連接至資料庫<br/>
+```
+Scaffold-DbContext "Server=伺服器位置;Database=資料庫;User ID=帳號;Password=密碼;TrustServerCertificate=true" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -NoOnConfiguring -UseDatabaseNames -NoPluralize -Force
+```
+TrustServerCertificate=true：如果出現 "此憑證鏈結是由不受信任的授權單位發出的" 可以在連線字串裡加這個參數<br/>
+-OutputDir Models：指說要將相關檔案產生在這個資料夾底下<br/>
+-NoOnConfiguring：DbContext不要產生OnConfiguring片段，現在還不會用到<br/>
+-UseDatabaseNames：使用跟資料庫一樣的大小寫命名，不然可能大小寫會被改成別的風格
+<img width="903" height="522" alt="image" src="https://github.com/user-attachments/assets/2774ebbd-fc8b-4dbe-9804-0dbf682ec31c" /><br/>
+-NoPluralize：不要加複數s，不然會幫你在命名結尾上加上s<br/>
+-Force：是如果此位置已有相同檔案時覆蓋，就算沒檔案也可以多這個參數<br/>
+
+### Code First
+
 ## View
 ### ViewData
 controller
