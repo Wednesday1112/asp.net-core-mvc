@@ -19,7 +19,8 @@
 
 ### Program.cs (路由)
 pattern 是網址路徑，controller 名字 / view 名字 / ID，有等於的代表胡果是這個就可以省略<br/>
-圖中 controller = Home 代表 contrler 名字是 Home 就可以省略，後面 view 一樣意思，ID 的問號代表可有可無，沒有打上 ID，網址一樣可用，ID 是錯的也可用<br/>
+圖中 controller = Home 代表 contrler 名字是 Home 就可以省略，後面 view 一樣意思<br/>
+ID 的問號代表可有可無，沒有打上 ID，網址一樣可用，ID 是錯的也可用<br/>
 <img width="918" height="449" alt="image" src="https://github.com/user-attachments/assets/0566413c-b78a-4bc7-90fa-06bb8c96fe2d" /><br/>
 下面兩張圖是一樣的網頁(注意網址)<br/>
 <img width="1316" height="459" alt="image" src="https://github.com/user-attachments/assets/dbccbdc9-6597-4cd9-80a8-9cf6b9d2f212" /><br/>
@@ -31,7 +32,8 @@ pattern 是網址路徑，controller 名字 / view 名字 / ID，有等於的代
 - Microsoft.EntityFrameworkCore.Tools
 
 ### Data First
-在套件管理種控台輸入以下指令以連接至資料庫<br/>
+把已經建好的資料庫弄到專案裡的 Model<br/>
+在套件管理主控台輸入以下指令以連接至資料庫<br/>
 ! 注意 ! 程式碼要確定沒有錯誤，不然指令輸入後會出錯，他也不會告訴你錯在哪
 ```
 Scaffold-DbContext "Server=伺服器位置;Database=資料庫;User ID=帳號;Password=密碼;TrustServerCertificate=true" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -NoOnConfiguring -UseDatabaseNames -NoPluralize -Force
@@ -46,7 +48,137 @@ TrustServerCertificate=true：如果出現 "此憑證鏈結是由不受信任的
 -Force：是如果此位置已有相同檔案時覆蓋，就算沒檔案也可以多這個參數<br/>
 
 ### Code First
+把專案裡打好的 Model，弄到資料庫<br/>
+在 Modle 資料夾建立類別<br/>
+<img width="1317" height="750" alt="image" src="https://github.com/user-attachments/assets/a4ce1cce-1843-4e24-923b-667699577679" /><br/>
+打上欄位
+```cs
+namespace Kcg.Models;
 
+public partial class TOPMenu
+{
+    public Guid TOPMenuId { get; set; }
+
+    public string Name { get; set; }
+
+    public string Url { get; set; }
+
+    public string Icon { get; set; }
+    
+    public int Orders { get; set; }
+}
+```
+再來一樣在 Model 建立一個類別，名稱為 資料庫名Context
+```cs
+public partial class KcgContext : DbContext //繼承 DbContext
+{
+    public KcgContext(DbContextOptions<KcgContext> options) : base(options)
+    {
+    }
+
+    public DbSet<TOPMenu> TOPMenu { get; set; } //建立資料表
+}
+```
+在 appsettings.json (參數檔)打上連線字串
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "KcgDatabase": "Server=伺服器位置;Database=資料庫名稱;User ID=使用者名稱;Password=密碼;TrustServerCertificate=true"
+  }
+}
+```
+在 Program.cs 加入資料庫物件的DI注入<br/>
+UseSqlServer() 裡的一整串代表去 appsettings 抓連線字串(Server=伺服器位置;Database=資料庫名稱;User ID=使用者名稱;Password=密碼;TrustServerCertificate=true)
+```cs
+builder.Services.AddDbContext<KcgContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("KcgDatabase")));
+```
+在套件管理主控台輸入以下指令，建立記錄檔(InitialCreate 是自己取的名字)
+```
+Add-Migration InitialCreate
+```
+在套件管理主控台輸入以下指令，更新資料庫，這時資料庫才會有剛剛打的資料表
+```
+Update-Database
+```
+新增資料表特性
+```cs
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<TOPMenu>(entity =>
+    {
+        entity.Property(e => e.TOPMenuId).HasDefaultValueSql("(newid())"); //預設值或繫結
+        entity.Property(e => e.Icon).IsRequired().HasMaxLength(50);
+        entity.Property(e => e.Name).IsRequired().HasMaxLength(50);
+        entity.Property(e => e.Url).IsRequired().HasMaxLength(50);
+        entity.Property(e => e.Orders).IsRequired();
+    });
+}
+```
+再來要建立記錄檔，表示資料表有更新(一樣 TOPMenuUp 是自己取的名字)
+```
+Add-Migration TOPMenuUp
+```
+最後再 update 資料庫
+```
+Update-Database
+```
+新增資料到資料表
+```cs
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<TOPMenu>().HasData(
+        new TOPMenu { Name = "網站導覽", Url = "a1", Icon = "Icon1", Orders = 1 },
+        new TOPMenu { Name = "回首頁", Url = "a2", Icon = "Icon2", Orders = 2 },
+        new TOPMenu { Name = "English", Url = "a3", Icon = "Icon3", Orders = 3 },
+        new TOPMenu { Name = "雙語詞彙", Url = "a4", Icon = "Icon4", Orders = 4 },
+        new TOPMenu { Name = "市長信箱", Url = "a5", Icon = "Icon5", Orders = 5 },
+        new TOPMenu { Name = "洽公導覽", Url = "a6", Icon = "Icon6", Orders = 6 });
+
+    modelBuilder.Entity<TOPMenu>(entity =>
+    {
+        entity.Property(e => e.TOPMenuId).HasDefaultValueSql("(newid())");
+        entity.Property(e => e.Icon).IsRequired().HasMaxLength(50);
+        entity.Property(e => e.Name).IsRequired().HasMaxLength(50);
+        entity.Property(e => e.Url).IsRequired().HasMaxLength(50);
+        entity.Property(e => e.Orders).IsRequired();
+    });
+}
+```
+更新資料庫
+```
+Add-Migration AddData
+```
+```
+Update-Database
+```
+
+## 使用資料庫物件取得資料
+先在 controller 的全域宣告一個資料庫物件
+```cs
+private readonly KcgContext _kcgContext; //先在全域宣告資料庫物件
+
+public HomeController(KcgContext kcgContext) //這邊是依賴注入，使用剛剛在 code first 的 Program.cs 設定好的資料庫物件的寫法
+{
+    _kcgContext = kcgContext; //這樣後面都可以藉由 _kcgContext 來取資料庫資料
+}
+```
+例如我要回傳 TOPMenu 資料表的第一筆資料的 Name
+```cs
+public string Index()
+{
+    return _kcgContext.TOPMenu.FirstOrDefault().Name;
+}
+```
+結果<br/>
+<img width="181" height="123" alt="image" src="https://github.com/user-attachments/assets/e31b3d47-636d-4e1c-929e-074e118277d6" />
 
 ## View
 ### ViewData
