@@ -12,12 +12,12 @@
 ## MVC 架構
 <img width="593" height="207" alt="image" src="https://github.com/user-attachments/assets/4275666d-a3a1-4e08-a31c-c47db00e81ff" /><br/>
 檔案架構長這樣，有什麼 controller 就要有什麼 view 下的資料夾，<br/>
-<img width="224" height="557" alt="image" src="https://github.com/user-attachments/assets/63a31ac5-6d29-4b0d-9693-a1bf36c212c6" /><br/>
+<img width="230" height="450" alt="image" src="https://github.com/user-attachments/assets/5da67d11-b319-4fa2-aeb4-d51b692d2530" /><br/>
 有什麼 view，controller 就要有什麼函式<br/>
 <img width="1261" height="512" alt="image" src="https://github.com/user-attachments/assets/17b7b310-5620-4de2-85b9-eaa2af85dcfa" />
 ### Program.cs (路由)
 pattern 是網址路徑，controller 名字 / view 名字 / ID，有等於的代表胡果是這個就可以省略，圖中 controller = Home 代表 contrler 名字是 Home 就可以省略，後面 view 一樣意思，ID 的問號代表可有可無，沒有打上 ID，網址一樣可用，ID 是錯的也可用<br/>
-<img width="918" height="449" alt="image" src="https://github.com/user-attachments/assets/0566413c-b78a-4bc7-90fa-06bb8c96fe2d" />
+<img width="918" height="449" alt="image" src="https://github.com/user-attachments/assets/0566413c-b78a-4bc7-90fa-06bb8c96fe2d" /><br/>
 下面兩張圖是一樣的網頁<br/>
 <img width="1316" height="459" alt="image" src="https://github.com/user-attachments/assets/dbccbdc9-6597-4cd9-80a8-9cf6b9d2f212" /><br/>
 <img width="1230" height="436" alt="image" src="https://github.com/user-attachments/assets/2bee10d8-4a7c-4a9b-9d76-3c083bbcd997" />
