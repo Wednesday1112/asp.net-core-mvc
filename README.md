@@ -1,4 +1,10 @@
 # asp.net core mvc 自學紀錄
+- [MVC 架構](#mvc-架構)
+  - [Program.cs (路由)](#program.cs-(路由))
+- [Database](#database)
+  - [Data First](#data-first)
+  - [Code First](#code-first)
+  - [使用資料庫物件取得資料](#使用資料庫物件取得資料)
 - [View](#view)
   - [ViewData](#viewdata)
   - [ViewBag](viewdbag)
@@ -160,7 +166,7 @@ Add-Migration AddData
 Update-Database
 ```
 
-## 使用資料庫物件取得資料
+### 使用資料庫物件取得資料
 先在 controller 的全域宣告一個資料庫物件
 ```cs
 private readonly KcgContext _kcgContext; //先在全域宣告資料庫物件
