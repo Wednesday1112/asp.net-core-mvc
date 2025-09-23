@@ -18,7 +18,8 @@
 <img width="1261" height="512" alt="image" src="https://github.com/user-attachments/assets/17b7b310-5620-4de2-85b9-eaa2af85dcfa" />
 
 ### Program.cs (路由)
-pattern 是網址路徑，controller 名字 / view 名字 / ID，有等於的代表胡果是這個就可以省略，圖中 controller = Home 代表 contrler 名字是 Home 就可以省略，後面 view 一樣意思，ID 的問號代表可有可無，沒有打上 ID，網址一樣可用，ID 是錯的也可用<br/>
+pattern 是網址路徑，controller 名字 / view 名字 / ID，有等於的代表胡果是這個就可以省略<br/>
+圖中 controller = Home 代表 contrler 名字是 Home 就可以省略，後面 view 一樣意思，ID 的問號代表可有可無，沒有打上 ID，網址一樣可用，ID 是錯的也可用<br/>
 <img width="918" height="449" alt="image" src="https://github.com/user-attachments/assets/0566413c-b78a-4bc7-90fa-06bb8c96fe2d" /><br/>
 下面兩張圖是一樣的網頁(注意網址)<br/>
 <img width="1316" height="459" alt="image" src="https://github.com/user-attachments/assets/dbccbdc9-6597-4cd9-80a8-9cf6b9d2f212" /><br/>
