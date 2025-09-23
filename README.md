@@ -27,17 +27,18 @@ pattern 是網址路徑，controller 名字 / view 名字 / ID，有等於的代
 - Microsoft.EntityFrameworkCore.Tools
 ### Data First
 在套件管理種控台輸入以下指令以連接至資料庫<br/>
+! 注意 !程式碼要確定沒有錯誤，不然指令輸入後會出錯，他也不會告訴你錯在哪
 ```
 Scaffold-DbContext "Server=伺服器位置;Database=資料庫;User ID=帳號;Password=密碼;TrustServerCertificate=true" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -NoOnConfiguring -UseDatabaseNames -NoPluralize -Force
 ```
 TrustServerCertificate=true：如果出現 "此憑證鏈結是由不受信任的授權單位發出的" 可以在連線字串裡加這個參數<br/>
 -OutputDir Models：指說要將相關檔案產生在這個資料夾底下<br/>
 -NoOnConfiguring：DbContext不要產生OnConfiguring片段，現在還不會用到<br/>
--UseDatabaseNames：使用跟資料庫一樣的大小寫命名，不然可能大小寫會被改成別的風格
+-UseDatabaseNames：使用跟資料庫一樣的大小寫命名，不然可能大小寫會被改成別的風格<br/>
 <img width="903" height="522" alt="image" src="https://github.com/user-attachments/assets/2774ebbd-fc8b-4dbe-9804-0dbf682ec31c" /><br/>
 -NoPluralize：不要加複數s，不然會幫你在命名結尾上加上s<br/>
+<img width="883" height="519" alt="image" src="https://github.com/user-attachments/assets/fa7b2ddc-ee52-451c-b837-a0ccb1efe79a" /><br/>
 -Force：是如果此位置已有相同檔案時覆蓋，就算沒檔案也可以多這個參數<br/>
-
 ### Code First
 
 ## View
