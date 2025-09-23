@@ -1,6 +1,6 @@
 # asp.net core mvc 自學紀錄
 - [MVC 架構](#mvc-架構)
-  - [Program.cs (路由)](#program.cs-(路由))
+  - [Program.cs (路由)](#programcs-路由)
 - [Database](#database)
   - [Data First](#data-first)
   - [Code First](#code-first)
@@ -13,8 +13,9 @@
   - [生命週期](#生命週期)
   - [TempData](#tempdata)
   - [架構的執行順序](#架構的執行順序)
-  - [_ViewStart](#viewstart)
+  - [_ViewStart](#_viewstart)
 - [Razor 基本語法](#razor-基本語法)
+- [CRUD](#crud)
 
 ## MVC 架構
 <img width="593" height="207" alt="image" src="https://github.com/user-attachments/assets/4275666d-a3a1-4e08-a31c-c47db00e81ff" /><br/>
@@ -256,7 +257,7 @@ public IActionResult Index()
 ### 生命週期
 兩個的生命週期只有一個 request，下一個 request 又是新的變數，例如我在另一個 view 使用 @ViewData["number1"]，雖然我有先載入 index 頁面，但另一個 view 就是另一個 request 了，所以另一個 view 印不出 ViewData["number1"] 的值
 
-###TempData
+### TempData
 用起來跟 ViewData 差不多
 ```cs
 public IActionResult index()
@@ -374,7 +375,7 @@ text 沒有留下痕跡<br/>
 ```
 <img width="537" height="230" alt="image" src="https://github.com/user-attachments/assets/fcea51af-f939-41c0-9d39-e3ac11e23815" />
 
-## CROD
+## CRUD
 
 
 
