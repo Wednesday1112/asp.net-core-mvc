@@ -466,17 +466,17 @@ namespace Kcg.Dtos
 ```cs
 using Kcg.Dtos
 ```
-<img width="1643" height="730" alt="image" src="https://github.com/user-attachments/assets/5065bb6b-78aa-4de7-be20-ac29e4592b5f" />
+<img width="1643" height="730" alt="image" src="https://github.com/user-attachments/assets/5065bb6b-78aa-4de7-be20-ac29e4592b5f" /><br/>
 Views/Index 的 model 要改成 NewsDto<br/> 
-<img width="579" height="107" alt="image" src="https://github.com/user-attachments/assets/93a1bf20-27aa-4bdd-8923-a14651bc4044" />
-會需要 using Dtos，放在 Views/Shared/_ViewImports.cshtml 可以省去一直 using 的麻煩，這邊打了，Views 底下其他檔案都有效<br/>
+<img width="579" height="107" alt="image" src="https://github.com/user-attachments/assets/93a1bf20-27aa-4bdd-8923-a14651bc4044" /><br/>
+會需要 using Dtos，放在 Views/Shared/_ViewImports.cshtml 可以省去一直 using 的麻煩，這邊打了，Views 底下其他檔案都有效
 ```cshtml
 @using Kcg.Dtos
 ```
-<img width="1877" height="751" alt="image" src="https://github.com/user-attachments/assets/68d21264-b6fe-4bb7-a452-9637b373299e" />
+<img width="1877" height="751" alt="image" src="https://github.com/user-attachments/assets/68d21264-b6fe-4bb7-a452-9637b373299e" /><br/>
 回到 Index 把欄位名改成剛剛 controller 設定的，以及把該刪的欄位刪掉<br/>
-<img width="1017" height="731" alt="image" src="https://github.com/user-attachments/assets/157e3b21-d9c6-4695-b26d-83d47235c0fb" />
-<img width="939" height="740" alt="image" src="https://github.com/user-attachments/assets/661efd6f-40d4-4d8d-860d-7ec274c32e27" />
+<img width="1017" height="731" alt="image" src="https://github.com/user-attachments/assets/157e3b21-d9c6-4695-b26d-83d47235c0fb" /><br/>
+<img width="939" height="740" alt="image" src="https://github.com/user-attachments/assets/661efd6f-40d4-4d8d-860d-7ec274c32e27" /><br/>
 結果圖<br/>
 <img width="1649" height="751" alt="image" src="https://github.com/user-attachments/assets/115154b1-2e5c-4e6e-9066-5d5493f6fb76" />
 
