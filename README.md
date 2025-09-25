@@ -17,6 +17,7 @@
   - [_ViewStart](#_viewstart)
 - [Razor 基本語法](#razor-基本語法)
 - [CRUD](#crud)
+  - [join](#join)
 
 ## MVC 架構
 <img width="593" height="207" alt="image" src="https://github.com/user-attachments/assets/4275666d-a3a1-4e08-a31c-c47db00e81ff" /><br/>
@@ -418,14 +419,66 @@ var result = from a in _context.News
 <img width="1351" height="160" alt="image" src="https://github.com/user-attachments/assets/2d7a95e6-cf96-4b39-acfc-c30fe9c37aed" />
 
 ### join
-
-
-
-
-
-
-
-
+現在畫面上的 DepartmentId、InsertEmployeeId 跟 UpdateEmployeeId 欄位都只是代號，所以現在要 join 其他資料表的資料近來(先 DepartmentId 跟 UpdateEmployeeId)，把上面的程式碼改成下面這樣
+```cs
+var result = from a in _context.News
+             join b in _context.Department on a.DepartmentId equals b.DepartmentId //join Department 資料表，且 DepartmentId 欄位要跟 a.DepartmentId 欄位一樣
+             join c in _context.Employee on a.UpdateEmployeeId equals c.EmployeeId
+             select new //去掉 News 型別，因為裡面不只有 News 資料表的資料
+             {
+                 Click = a.Click,
+                 DepartmentId = a.DepartmentId,
+                 Enable = a.Enable,
+                 EndDateTime = a.EndDateTime,
+                 InsertDateTime = a.InsertDateTime,
+                 InsertEmployeeId = a.InsertEmployeeId,
+                 NewsId = a.NewsId,
+                 StartDateTime = a.StartDateTime,
+                 Title = a.Title,
+                 UpdateDateTime = a.UpdateDateTime,
+                 UpdateEmployeeId = a.UpdateEmployeeId,
+                 UpdateEmployeeName = c.Name,
+                 DepartmentName = b.Name
+             };
+```
+去掉 News 型別後，他就變無型別，這樣不好維護，所以使用DTO寫法，讓他加上強型別<br/>
+<img width="222" height="334" alt="image" src="https://github.com/user-attachments/assets/2e0c791f-a6e5-4047-bd20-a658418142a9" />
+```cs
+namespace Kcg.Dtos
+{
+    public class NewsDto
+    {
+        //DTO 也可以做到減少不必要的欄位
+        public Guid NewsId { get; set; }
+        public string Title { get; set; }
+        public string DepartmentName { get; set; }
+        public DateTime StartDateTime { get; set; }
+        public DateTime EndDateTime { get; set; }
+        public DateTime UpdateDateTime { get; set; }
+        public string UpdateEmployeeName { get; set; }
+        public int Click { get; set; }
+        public bool Enable { get; set; }
+    }
+}
+```
+回到 Controller，可以加上型別 NewsDto，把不必要的欄位刪掉<br/>
+! 注意 ! 要 using 剛剛的 Dtos
+```cs
+using Kcg.Dtos
+```
+<img width="1643" height="730" alt="image" src="https://github.com/user-attachments/assets/5065bb6b-78aa-4de7-be20-ac29e4592b5f" />
+Views/Index 的 model 要改成 NewsDto<br/> 
+<img width="579" height="107" alt="image" src="https://github.com/user-attachments/assets/93a1bf20-27aa-4bdd-8923-a14651bc4044" />
+會需要 using Dtos，放在 Views/Shared/_ViewImports.cshtml 可以省去一直 using 的麻煩，這邊打了，Views 底下其他檔案都有效<br/>
+```cshtml
+@using Kcg.Dtos
+```
+<img width="1877" height="751" alt="image" src="https://github.com/user-attachments/assets/68d21264-b6fe-4bb7-a452-9637b373299e" />
+回到 Index 把欄位名改成剛剛 controller 設定的，以及把該刪的欄位刪掉<br/>
+<img width="1017" height="731" alt="image" src="https://github.com/user-attachments/assets/157e3b21-d9c6-4695-b26d-83d47235c0fb" />
+<img width="939" height="740" alt="image" src="https://github.com/user-attachments/assets/661efd6f-40d4-4d8d-860d-7ec274c32e27" />
+結果圖<br/>
+<img width="1649" height="751" alt="image" src="https://github.com/user-attachments/assets/115154b1-2e5c-4e6e-9066-5d5493f6fb76" />
 
 
 
