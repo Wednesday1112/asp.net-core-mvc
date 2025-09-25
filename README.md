@@ -1,4 +1,5 @@
 # asp.net core mvc 自學紀錄
+參考影片https://www.youtube.com/watch?v=_oRJ8TNcHWo&list=PLneJIGUTIItsCaiHCd8Rte8kM0fIlyM2f&pp=0gcJCaIEOCosWNin
 - [MVC 架構](#mvc-架構)
   - [Program.cs (路由)](#programcs-路由)
 - [Database](#database)
