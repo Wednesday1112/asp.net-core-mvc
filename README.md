@@ -376,6 +376,54 @@ text 沒有留下痕跡<br/>
 <img width="537" height="230" alt="image" src="https://github.com/user-attachments/assets/fcea51af-f939-41c0-9d39-e3ac11e23815" />
 
 ## CRUD
+藉著範例檔能使用新增、查詢、修改和刪除的功能<br/>
+<img width="1920" height="920" alt="image" src="https://github.com/user-attachments/assets/57bb8505-6eda-4d7c-b143-fd711f8a1fe8" /><br/>
+首先在 Controller 建立新的控制器<br/>
+<img width="955" height="657" alt="image" src="https://github.com/user-attachments/assets/09b6a044-e00d-4b76-a361-acde4ac52afd" /><br/>
+使用 Kcg 資料庫的 News 資料表<br/>
+<img width="653" height="446" alt="image" src="https://github.com/user-attachments/assets/d3f08e58-6b40-4cda-ba56-5a628c8ab2b3" /><br/>
+然後他會幫我們新增 Views 下的 News 資料夾，裡面直接就有新增、刪除、細節、編輯及顯示五個檔案<br/>
+<img width="192" height="177" alt="image" src="https://github.com/user-attachments/assets/351d062b-d66b-4089-8d3e-e52cf5a30cd2" /><br/>
+為了更方便檢視畫面，在上面標提列新增 NewsIndex<br/>
+<img width="1915" height="738" alt="image" src="https://github.com/user-attachments/assets/b6a96c15-ba8f-4a56-acb2-1a27b67d4cd2" /><br/>
+結果會跟第一張圖一樣，新增、刪除及編輯都會跟資料庫同步<br/>
+<br/>
+可以發現 Contents 欄位的文字特別長，所以我們讓他只在 Details 顯示<br/>
+把這邊刪除只是讓他不顯示，但仍然有耗費資源效能抓資料<br/>
+<img width="1913" height="752" alt="image" src="https://github.com/user-attachments/assets/01edf403-6cba-4cdb-885d-c1e9b24c77e8" />
+<img width="1912" height="754" alt="image" src="https://github.com/user-attachments/assets/b64f8ac9-820d-47ea-8d80-a7e045cb6995" /><br/>
+Controller 的這個寫法代表把 News 所有資料取下來<br/>
+<img width="952" height="734" alt="image" src="https://github.com/user-attachments/assets/f9028de7-b98e-48cb-af98-0ce09bc9fe9b" /><br/>
+改成一欄一欄篩選
+```cs
+var result = from a in _context.News
+                 select new News
+                 {
+                     Click = a.Click,
+                     DepartmentId = a.DepartmentId,
+                     Enable = a.Enable,
+                     EndDateTime = a.EndDateTime,
+                     InsertDateTime = a.InsertDateTime,
+                     InsertEmployeeId = a.InsertEmployeeId,
+                     NewsId = a.NewsId,
+                     StartDateTime = a.StartDateTime,
+                     Title = a.Title,
+                     UpdateDateTime = a.UpdateDateTime,
+                     UpdateEmployeeId = a.UpdateEmployeeId
+                 };
+    return View(await result.ToListAsync());
+```
+啟動偵錯可以看到 SQL 語法<br/>
+<img width="1351" height="160" alt="image" src="https://github.com/user-attachments/assets/2d7a95e6-cf96-4b39-acfc-c30fe9c37aed" />
+
+### join
+
+
+
+
+
+
+
 
 
 
