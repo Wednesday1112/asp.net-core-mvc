@@ -554,3 +554,6 @@ public async Task<IActionResult> Create(NewsCreateDto news)
 <img width="1175" height="600" alt="image" src="https://github.com/user-attachments/assets/73d4cebb-6fee-469c-bc9c-e4019e5d9041" /><br/>
 在有空格的情況下點 Create 按鈕，發現根本沒有 request，沒有進到 controller 的下面區塊，因為前端就擋掉了，在 Views/Create.cshtml 就擋掉了<br/>
 <img width="906" height="485" alt="image" src="https://github.com/user-attachments/assets/915fc0e5-109b-40c4-886b-81a37b3f7bbe" /><br/>
+試著建一筆資料<br/>
+! 注意 ! DepartmentId 欄位的值要有對上 Department 資料表的代號，不然抓不到資料，也就不會顯示有新增一筆資料了(雖然資料庫還是有新增資料，但網頁抓不到)<br/>
+<img width="1316" height="681" alt="image" src="https://github.com/user-attachments/assets/32ed4034-5fed-4c23-9479-12b1b4afdbe7" />
