@@ -18,6 +18,7 @@
 - [Razor 基本語法](#razor-基本語法)
 - [CRUD](#crud)
   - [join](#join)
+  - [範例的 create 功能](#範例的-create-功能)
 
 ## MVC 架構
 <img width="593" height="207" alt="image" src="https://github.com/user-attachments/assets/4275666d-a3a1-4e08-a31c-c47db00e81ff" /><br/>
@@ -480,6 +481,76 @@ Views/Index 的 model 要改成 NewsDto<br/>
 結果圖<br/>
 <img width="1649" height="751" alt="image" src="https://github.com/user-attachments/assets/115154b1-2e5c-4e6e-9066-5d5493f6fb76" />
 
+### 範例的 create 功能
+範例的 create 頁面<br/>
+<img width="1785" height="741" alt="image" src="https://github.com/user-attachments/assets/c4a3c187-22ed-4a41-806c-0b989d49f8ab" /><br/>
+<img width="559" height="742" alt="image" src="https://github.com/user-attachments/assets/5ee8437b-7513-4054-84c5-bc05444a58f0" /><br/>
+他在 controller 有兩個區塊<br/>
+在 index 點 create new 用的是上面的，在 create 頁面點 create 是下面的<br/>
+<img width="1061" height="719" alt="image" src="https://github.com/user-attachments/assets/9a6a16b1-0a31-42e9-b50b-164191590fe3" /><br/>
+下面的 HttpPost 意思是方法走 Post，要知道是走 Psot 要去網頁的 html 看<br/>
+<img width="1125" height="605" alt="image" src="https://github.com/user-attachments/assets/3c5b442a-915a-403f-b0d3-baff68db186f" /><br/>
+<img width="467" height="721" alt="image" src="https://github.com/user-attachments/assets/2fed8abf-ccfe-4972-9fcf-0b6c4a2c3c8d" /><br/>
+Bind 裡面有太多欄位，不好維護
+```cs
+//create 一個 news，裡面 Bind 會收到的資料
+public async Task<IActionResult> Create([Bind("NewsId,Title,Contents,DepartmentId,StartDateTime,EndDateTime,InsertDateTime,InsertEmployeeId,UpdateDateTime,UpdateEmployeeId,Click,Enable")] News news)
+{
+    if (ModelState.IsValid)
+    {
+        news.NewsId = Guid.NewGuid();
+        _context.Add(news); //加資料
+        await _context.SaveChangesAsync(); //存到資料庫
+        return RedirectToAction(nameof(Index)); //返回 Index
+    }
+    return View(news);
+}
+```
+可以用 Dto 方法替代，先建 dto 檔，一樣有刪掉一些不必要的欄位<br/>
+<img width="199" height="58" alt="image" src="https://github.com/user-attachments/assets/3fc67002-5269-4c19-896d-90a0460596f9" /><br/>
+```cs
+public class NewsCreateDto
+{
+    public string Title { get; set; }
+    public string Contents { get; set; }
+    public int DepartmentId { get; set; }
+    public DateTime StartDateTime { get; set; }
+    public DateTime EndDateTime { get; set; }
+}
+```
+然後剛剛 controller 裡 Bind 一大串就跟裡面改成這樣
+```cs
+public async Task<IActionResult> Create(NewsCreateDto news)
+{
+    if (ModelState.IsValid) //欄位值要是有效的
+    {
+        News insert = new News()
+        {
+            Title = news.Title,
+            Contents = news.Contents,
+            DepartmentId = news.DepartmentId,
+            StartDateTime = news.StartDateTime,
+            EndDateTime = news.EndDateTime,
+            Click = 0, //這4個欄位直接給定
+            Enable = true,
+            InsertEmployeeId = 1,
+            UpdateEmployeeId = 1
+        };
 
+        _context.News.Add(insert);
 
+        await _context.SaveChangesAsync();
 
+        return RedirectToAction(nameof(Index));
+    }
+    return View(news); //有欄位無效就繼續在 Create 頁面，且剛剛填的資料還保存著
+}
+```
+! 注意 ! Views/Create.cshtml
+```cshtml
+@model NewsCreateDto
+```
+改好後下面有欄位需要刪，這邊體現 dto 的好處，他會有智慧提示錯誤在哪裡，如果是 Bind 就沒有<br/>
+<img width="1175" height="600" alt="image" src="https://github.com/user-attachments/assets/73d4cebb-6fee-469c-bc9c-e4019e5d9041" /><br/>
+在有空格的情況下點 Create 按鈕，發現根本沒有 request，沒有進到 controller 的下面區塊，因為前端就擋掉了，在 Views/Create.cshtml 就擋掉了<br/>
+<img width="906" height="485" alt="image" src="https://github.com/user-attachments/assets/915fc0e5-109b-40c4-886b-81a37b3f7bbe" /><br/>
