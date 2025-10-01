@@ -196,7 +196,7 @@ public string Index()
 <img width="181" height="123" alt="image" src="https://github.com/user-attachments/assets/e31b3d47-636d-4e1c-929e-074e118277d6" />
 
 # View
-### ViewData
+## ViewData
 controller
 ```cs
 public IActionResult index()
@@ -303,7 +303,7 @@ View2 頁面<br/>
 ## 架構的執行順序
 request > Controller > View > Layout(主版型)
 
-### _ViewStart
+## _ViewStart
 設定主板型(版型放在View\Shared)
 View\_ViewStart
 ```cshtml
