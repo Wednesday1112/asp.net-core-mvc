@@ -1,5 +1,5 @@
 # asp.net core mvc 自學紀錄
-參考影片https://www.youtube.com/watch?v=_oRJ8TNcHWo&list=PLneJIGUTIItsCaiHCd8Rte8kM0fIlyM2f&pp=0gcJCaIEOCosWNin
+[參考影片](https://www.youtube.com/watch?v=_oRJ8TNcHWo&list=PLneJIGUTIItsCaiHCd8Rte8kM0fIlyM2f&pp=0gcJCaIEOCosWNin)
 - [MVC 架構](#mvc-架構)
   - [Program.cs (路由)](#programcs-路由)
 - [Database](#database)
@@ -19,15 +19,20 @@
 - [CRUD](#crud)
   - [join](#join)
   - [範例的 create 功能](#範例的-create-功能)
+    - [結果](#結果)
+  - [範例的 edit 功能](#範例的-edit-功能)
+    - [DepartmentId 欄位下拉式選單](#departmentid-欄位下拉式選單)
+    - [Post 區塊修改](#post-區塊修改)
+    - [結果](#結果)
 
-## MVC 架構
+# MVC 架構
 <img width="593" height="207" alt="image" src="https://github.com/user-attachments/assets/4275666d-a3a1-4e08-a31c-c47db00e81ff" /><br/>
 檔案架構長這樣，有什麼 controller 就要有什麼 view 下的資料夾，<br/>
 <img width="230" height="450" alt="image" src="https://github.com/user-attachments/assets/5da67d11-b319-4fa2-aeb4-d51b692d2530" /><br/>
 有什麼 view，controller 就要有什麼函式<br/>
 <img width="1261" height="512" alt="image" src="https://github.com/user-attachments/assets/17b7b310-5620-4de2-85b9-eaa2af85dcfa" />
 
-### Program.cs (路由)
+## Program.cs (路由)
 pattern 是網址路徑，controller 名字 / view 名字 / ID，有等於的代表胡果是這個就可以省略<br/>
 圖中 controller = Home 代表 contrler 名字是 Home 就可以省略，後面 view 一樣意思<br/>
 ID 的問號代表可有可無，沒有打上 ID，網址一樣可用，ID 是錯的也可用<br/>
@@ -36,7 +41,7 @@ ID 的問號代表可有可無，沒有打上 ID，網址一樣可用，ID 是�
 <img width="1316" height="459" alt="image" src="https://github.com/user-attachments/assets/dbccbdc9-6597-4cd9-80a8-9cf6b9d2f212" /><br/>
 <img width="1230" height="436" alt="image" src="https://github.com/user-attachments/assets/2bee10d8-4a7c-4a9b-9d76-3c083bbcd997" />
 
-## Database
+# Database
 使用套件：
 - Microsoft.EntityFrameworkCore.SqlServer
 - Microsoft.EntityFrameworkCore.Tools
@@ -57,7 +62,7 @@ TrustServerCertificate=true：如果出現 "此憑證鏈結是由不受信任的
 <img width="883" height="519" alt="image" src="https://github.com/user-attachments/assets/fa7b2ddc-ee52-451c-b837-a0ccb1efe79a" /><br/>
 -Force：是如果此位置已有相同檔案時覆蓋，就算沒檔案也可以多這個參數<br/>
 
-### Code First
+## Code First
 把專案裡打好的 Model，弄到資料庫<br/>
 在 Modle 資料夾建立類別<br/>
 <img width="1317" height="750" alt="image" src="https://github.com/user-attachments/assets/a4ce1cce-1843-4e24-923b-667699577679" /><br/>
@@ -170,7 +175,7 @@ Add-Migration AddData
 Update-Database
 ```
 
-### 使用資料庫物件取得資料
+## 使用資料庫物件取得資料
 先在 controller 的全域宣告一個資料庫物件
 ```cs
 private readonly KcgContext _kcgContext; //先在全域宣告資料庫物件
@@ -190,7 +195,7 @@ public string Index()
 結果<br/>
 <img width="181" height="123" alt="image" src="https://github.com/user-attachments/assets/e31b3d47-636d-4e1c-929e-074e118277d6" />
 
-## View
+# View
 ### ViewData
 controller
 ```cs
@@ -206,7 +211,7 @@ view\controllerName\index
 @ViewData["要傳的變數"] //Razor語法，想要在這用c#語法或變數時要加@
 ```
 
-### ViewBag
+## ViewBag
 controller
 ```cs
 public IActionResult index()
@@ -260,7 +265,7 @@ public IActionResult Index()
 ### 生命週期
 兩個的生命週期只有一個 request，下一個 request 又是新的變數，例如我在另一個 view 使用 @ViewData["number1"]，雖然我有先載入 index 頁面，但另一個 view 就是另一個 request 了，所以另一個 view 印不出 ViewData["number1"] 的值
 
-### TempData
+## TempData
 用起來跟 ViewData 差不多
 ```cs
 public IActionResult index()
@@ -295,7 +300,7 @@ View2 頁面<br/>
 回到 Privacy 頁面<br/>
 <img width="782" height="308" alt="image" src="https://github.com/user-attachments/assets/5993e569-8ade-484e-86bb-50e05b2aabe3" />
 
-### 架構的執行順序
+## 架構的執行順序
 request > Controller > View > Layout(主版型)
 
 ### _ViewStart
@@ -339,7 +344,7 @@ View\Demo\index
 </div>
 ```
 
-## Razor 基本語法
+# Razor 基本語法
 ```cshtml
 @{
     string title = "在 @{ } 中可以使用 c# 語法";
@@ -378,7 +383,7 @@ text 沒有留下痕跡<br/>
 ```
 <img width="537" height="230" alt="image" src="https://github.com/user-attachments/assets/fcea51af-f939-41c0-9d39-e3ac11e23815" />
 
-## CRUD
+# CRUD
 藉著範例檔能使用新增、查詢、修改和刪除的功能<br/>
 <img width="1920" height="920" alt="image" src="https://github.com/user-attachments/assets/57bb8505-6eda-4d7c-b143-fd711f8a1fe8" /><br/>
 首先在 Controller 建立新的控制器<br/>
@@ -419,7 +424,7 @@ var result = from a in _context.News
 啟動偵錯可以看到 SQL 語法<br/>
 <img width="1351" height="160" alt="image" src="https://github.com/user-attachments/assets/2d7a95e6-cf96-4b39-acfc-c30fe9c37aed" />
 
-### join
+## join
 現在畫面上的 DepartmentId、InsertEmployeeId 跟 UpdateEmployeeId 欄位都只是代號，所以現在要 join 其他資料表的資料近來(先 DepartmentId 跟 UpdateEmployeeId)，把上面的程式碼改成下面這樣
 ```cs
 var result = from a in _context.News
@@ -481,7 +486,7 @@ Views/Index 的 model 要改成 NewsDto<br/>
 結果圖<br/>
 <img width="1649" height="751" alt="image" src="https://github.com/user-attachments/assets/115154b1-2e5c-4e6e-9066-5d5493f6fb76" />
 
-### 範例的 create 功能
+## 範例的 create 功能
 範例的 create 頁面<br/>
 <img width="1785" height="741" alt="image" src="https://github.com/user-attachments/assets/c4a3c187-22ed-4a41-806c-0b989d49f8ab" /><br/>
 <img width="559" height="742" alt="image" src="https://github.com/user-attachments/assets/5ee8437b-7513-4054-84c5-bc05444a58f0" /><br/>
@@ -554,6 +559,232 @@ public async Task<IActionResult> Create(NewsCreateDto news)
 <img width="1175" height="600" alt="image" src="https://github.com/user-attachments/assets/73d4cebb-6fee-469c-bc9c-e4019e5d9041" /><br/>
 在有空格的情況下點 Create 按鈕，發現根本沒有 request，沒有進到 controller 的下面區塊，因為前端就擋掉了，在 Views/Create.cshtml 就擋掉了<br/>
 <img width="906" height="485" alt="image" src="https://github.com/user-attachments/assets/915fc0e5-109b-40c4-886b-81a37b3f7bbe" /><br/>
+
+### 結果
 試著建一筆資料<br/>
 ! 注意 ! DepartmentId 欄位的值要有對上 Department 資料表的代號，不然抓不到資料，也就不會顯示有新增一筆資料了(雖然資料庫還是有新增資料，但網頁抓不到)<br/>
 <img width="1316" height="681" alt="image" src="https://github.com/user-attachments/assets/32ed4034-5fed-4c23-9479-12b1b4afdbe7" />
+
+## 範例的 edit 功能
+範例 edit 頁面<br/>
+<img width="1308" height="687" alt="image" src="https://github.com/user-attachments/assets/c5eb2a5d-f784-4c72-934c-323a4c875da9" /><br/>
+<img width="453" height="835" alt="image" src="https://github.com/user-attachments/assets/3688710d-6476-4f77-aece-1fcd69c9f82c" />
+在 controller 一樣有兩塊，點 edit 是走上面 get，點 save 是走下面 post<br/>
+<img width="1157" height="800" alt="image" src="https://github.com/user-attachments/assets/cac24fe1-7169-474b-a597-0f1ee3ab49a1" /><br/>
+get 是透過主鍵(那個流水號)只到要的資料，網址上有寫他抓的流水號，因為之前在講路由時就有提到網址最後面試可有可無的 id，就是這個id<br/>
+<img width="535" height="35" alt="image" src="https://github.com/user-attachments/assets/f5f6fde3-4983-49c7-b664-14e1762b9d54" />
+```cs
+// GET: News/Edit/5
+public async Task<IActionResult> Edit(Guid? id) //NewsId (流水號)型別是 Guid
+{
+    if (id == null)
+    {
+        return NotFound();
+    }
+
+    var news = await _context.News.FindAsync(id); //透過 id 找這筆資料
+    if (news == null)
+    {
+        return NotFound();
+    }
+    return View(news); //傳給 Views/News/Edit.cshtml
+}
+```
+然後一樣用 DTO 刪掉一些欄位<br/>
+<img width="212" height="84" alt="image" src="https://github.com/user-attachments/assets/cd500d48-cb70-4dac-8b10-1f4c7796a3b4" />
+```cs
+namespace Kcg.Dtos
+{
+    public class NewsEditDto
+    {
+        public Guid NewsId { get; set; }
+        public string Title { get; set; }
+        public string Contents { get; set; }
+        public int DepartmentId { get; set; }
+        public DateTime StartDateTime { get; set; }
+        public DateTime EndDateTime { get; set; }
+        public Boolean Enable { get; set; }
+    }
+}
+```
+回到 controller，我們不用取全部資料，所以改成這個<br/>
+```cs
+// GET: News/Edit/5
+public async Task<IActionResult> Edit(Guid? id)
+{
+    if (id == null)
+    {
+        return NotFound();
+    }
+
+    //var news = await _context.News.FindAsync(id); //改掉
+    var news = await (from a in _context.News //改成這個
+                      where a.NewsId == id
+                      select new NewsEditDto
+                      {
+                          EndDateTime = a.EndDateTime,
+                          NewsId = a.NewsId,
+                          StartDateTime = a.StartDateTime,
+                          Title = a.Title,
+                          Contents = a.Contents,
+                          DepartmentId = a.DepartmentId
+                      }).SingleOrDefaultAsync();
+
+    if (news == null)
+    {
+        return NotFound();
+    }
+    return View(news);
+}
+```
+! 注意 ! 因為使用 DTO，所以 Views/News/Edit.cshtml 的 model 要改
+```cshtml
+@model NewsEditDto
+```
+改完，下面欄位有的要刪掉<br/>
+<img width="849" height="666" alt="image" src="https://github.com/user-attachments/assets/95bef85c-7809-4990-96af-e439e278d37f" />
+
+### DepartmentId 欄位下拉式選單
+現在 DepartmentId 只是代號，想要他到 Department 資料表找對應的資料，可是現在 controller 已經接收 DTO 的資料了，這時可以用 ViewModels (controller 傳到 view 的 model)<br/>
+不用之前的 join 是因為 ViewModels 比較好，重要資料最好用這個<br/>
+<img width="612" height="727" alt="image" src="https://github.com/user-attachments/assets/c2fb4fe7-7523-4a33-8c89-040901bf5203" /><br/>
+<img width="234" height="106" alt="image" src="https://github.com/user-attachments/assets/6047fbce-9020-4671-a1a4-28710f0a24bc" /><br/>
+```cs
+namespace Kcg.ViewModels
+{
+    public class NewsEditViewModel
+    {
+        public NewsEditDto News { get; set; } //抓 DTO(News) 資料
+        public List<Department> Departments { get; set; } //抓 Department 資料
+    }
+}
+```
+回 controller，抓資料的程式碼要改<br/>
+! 注意 ! 要 using Kcg.ViewModels<br/>
+```cs
+// GET: News/Edit/5
+public async Task<IActionResult> Edit(Guid? id)
+{
+    if (id == null)
+    {
+        return NotFound();
+    }
+
+    var NewsEditViewModel = new NewsEditViewModel(); //使用 NewsEditViewModel
+
+    NewsEditViewModel.News = await (from a in _context.News //取 News 資料
+                                    where a.NewsId == id
+                                    select new NewsEditDto
+                                    {
+                                        EndDateTime = a.EndDateTime,
+                                        NewsId = a.NewsId,
+                                        StartDateTime = a.StartDateTime,
+                                        Title = a.Title,
+                                        Contents = a.Contents,
+                                        DepartmentId = a.DepartmentId,
+                                        Enable = a.Enable
+                                    }).SingleOrDefaultAsync();
+
+    NewsEditViewModel.Departments = await _context.Department.ToListAsync(); //取 Departments 資料
+
+    if (NewsEditViewModel.News == null)
+    {
+        return NotFound();
+    }
+
+    return View(NewsEditViewModel);
+}
+```
+! 注意 ! Views/News/Edit.cshtml 的 model 從 NewsEditDto 改成 NewsEditViewModel<br/>
+! 再注意 ! Views/_ViewImpots.cshtml 要加 NewsEditViewModel
+```cshtml
+@model NewsEditViewModel
+```
+```cshtml
+@using Kcg.ViewModels
+```
+Edit.cshtml 的 model 改好後下面欄位要改，都加上 News.，兩層<br/>
+<img width="1257" height="805" alt="image" src="https://github.com/user-attachments/assets/44ecfdbe-d889-4282-a8b9-c1ef4965c0cd" /><br/>
+<img width="1249" height="793" alt="image" src="https://github.com/user-attachments/assets/6f4327d5-fe7d-45d2-ac9f-cbe4426f2c96" /><br/>
+最後是下拉式選單(html)，寫在 Edit.cshtml
+```cshtml
+<div class="form-group">
+    <label asp-for="News.DepartmentId" class="control-label"></label>
+    <select name="News.DepartmentId" class="form-select"> //選單
+        @foreach(var temp in Model.Departments) //Departments 資料表有幾筆資料就有幾個選項
+        {
+            <option value="@temp.DepartmentId">@temp.Name</option> //使用者看到的是 Departments.Name，系統回傳的值是 Departments.DepartmentId
+        }
+    </select>
+    <span asp-validation-for="News.DepartmentId" class="text-danger"></span>
+</div>
+```
+
+### Post 區塊修改
+剛剛動的都是 Get(上面區塊)，現在要改 Post(下面區塊)<br/>
+首先改 Bind，他有一長串，不好的地方上面有講過
+```cs
+public async Task<IActionResult> Edit(Guid id, NewsEditDto news)
+{
+
+}
+```
+
+```cs
+public async Task<IActionResult> Edit(Guid id, NewsEditDto news)
+{
+    if (id != news.NewsId)
+    {
+        return NotFound();
+    }
+
+    if (ModelState.IsValid) //edit 欄位有效
+    {
+        var update = _context.News.Find(news.NewsId); //利用 NewsId 找到這筆資料
+
+        if (update != null) //有沒有這筆資料
+        {
+            //更新欄位
+            update.Title = news.Title;
+            update.Contents = news.Contents;
+            update.DepartmentId = news.DepartmentId;
+            update.StartDateTime = news.StartDateTime;
+            update.EndDateTime = news.EndDateTime;
+            update.Enable = news.Enable;
+
+            //內部給定
+            update.UpdateEmployeeId = 1;
+            update.UpdateDateTime = DateTime.Now;
+
+            await _context.SaveChangesAsync(); //儲存修改
+
+            return RedirectToAction(nameof(Index)); //返回 News/Index.cshtml 頁面
+        }
+
+        /*try  上面的 update 已經排除沒有這筆資料的狀況了，所以這 try catch 可以刪掉
+        {
+            _context.Update(news);
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!NewsExists(news.NewsId))
+            {
+                return NotFound();
+            }
+            else
+            {
+                throw;
+            }
+        }
+        return RedirectToAction(nameof(Index));*/
+    }
+    return View(news); //欄位無效就繼續待在這，資料也還在
+}
+```
+
+### 結果
+改這筆上次建的資料<br/>
+<img width="508" height="558" alt="image" src="https://github.com/user-attachments/assets/4a866f27-e0f2-4103-a868-2e3dde72a94e" />
+<img width="466" height="529" alt="image" src="https://github.com/user-attachments/assets/2f02f5c4-cc53-41c3-b2cf-e66382a1ac5d" />
+<img width="1346" height="704" alt="image" src="https://github.com/user-attachments/assets/5fac12ea-d2ef-4cd7-9d9a-54e557d802c4" />
