@@ -46,7 +46,7 @@ ID 的問號代表可有可無，沒有打上 ID，網址一樣可用，ID 是�
 - Microsoft.EntityFrameworkCore.SqlServer
 - Microsoft.EntityFrameworkCore.Tools
 
-### Data First
+## Data First
 把已經建好的資料庫弄到專案裡的 Model<br/>
 在套件管理主控台輸入以下指令以連接至資料庫<br/>
 ! 注意 ! 程式碼要確定沒有錯誤，不然指令輸入後會出錯，他也不會告訴你錯在哪
