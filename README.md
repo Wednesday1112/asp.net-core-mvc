@@ -24,6 +24,7 @@
     - [DepartmentId 欄位下拉式選單](#departmentid-欄位下拉式選單)
     - [Post 區塊修改](#post-區塊修改)
     - [結果](#結果)
+- [範例的 delete 功能](#範例的-delete-功能)
 
 # MVC 架構
 <img width="593" height="207" alt="image" src="https://github.com/user-attachments/assets/4275666d-a3a1-4e08-a31c-c47db00e81ff" /><br/>
@@ -568,7 +569,7 @@ public async Task<IActionResult> Create(NewsCreateDto news)
 ## 範例的 edit 功能
 範例 edit 頁面<br/>
 <img width="1308" height="687" alt="image" src="https://github.com/user-attachments/assets/c5eb2a5d-f784-4c72-934c-323a4c875da9" /><br/>
-<img width="453" height="835" alt="image" src="https://github.com/user-attachments/assets/3688710d-6476-4f77-aece-1fcd69c9f82c" />
+<img width="453" height="835" alt="image" src="https://github.com/user-attachments/assets/3688710d-6476-4f77-aece-1fcd69c9f82c" /><br/>
 在 controller 一樣有兩塊，點 edit 是走上面 get，點 save 是走下面 post<br/>
 <img width="1157" height="800" alt="image" src="https://github.com/user-attachments/assets/cac24fe1-7169-474b-a597-0f1ee3ab49a1" /><br/>
 get 是透過主鍵(那個流水號)只到要的資料，網址上有寫他抓的流水號，因為之前在講路由時就有提到網址最後面試可有可無的 id，就是這個id<br/>
@@ -628,7 +629,7 @@ public async Task<IActionResult> Edit(Guid? id)
                           Title = a.Title,
                           Contents = a.Contents,
                           DepartmentId = a.DepartmentId
-                      }).SingleOrDefaultAsync();
+                      }).SingleOrDefaultAsync(); //抓 single 資料以防萬一抓到兩筆
 
     if (news == null)
     {
@@ -788,3 +789,45 @@ public async Task<IActionResult> Edit(Guid id, NewsEditDto news)
 <img width="508" height="558" alt="image" src="https://github.com/user-attachments/assets/4a866f27-e0f2-4103-a868-2e3dde72a94e" />
 <img width="466" height="529" alt="image" src="https://github.com/user-attachments/assets/2f02f5c4-cc53-41c3-b2cf-e66382a1ac5d" />
 <img width="1346" height="704" alt="image" src="https://github.com/user-attachments/assets/5fac12ea-d2ef-4cd7-9d9a-54e557d802c4" />
+
+## 範例的 delete 功能
+範例 delete 頁面<br/>
+<img width="1329" height="688" alt="image" src="https://github.com/user-attachments/assets/41f6c064-6b27-4594-9f3d-14afc9fb7c36" /><br/>
+<img width="677" height="644" alt="image" src="https://github.com/user-attachments/assets/74f6a5ef-dcb0-4371-af4f-38893a5b5914" /><br/>
+在 controller 一樣有兩個區塊，上面的讓你 check 資料，下面的執行刪除<br/>
+<img width="715" height="855" alt="image" src="https://github.com/user-attachments/assets/4d6e9d86-a694-40ff-b9f7-4dee2547885f" />
+```cs
+// GET: News/Delete/5
+public async Task<IActionResult> Delete(Guid? id)
+{
+    if (id == null)
+    {
+        return NotFound();
+    }
+
+    var news = await _context.News
+        .FirstOrDefaultAsync(m => m.NewsId == id); //透過 id 在 News 裡找資料，first 資料以防萬一抓到兩筆
+    if (news == null)
+    {
+        return NotFound();
+    }
+
+    return View(news);
+}
+```
+```cs
+// POST: News/Delete/5
+[HttpPost, ActionName("Delete")] //因為上面網址已經是 News/Delete 了，所以這邊加 ActionName() 讓這邊網址也是 News/Delete，而不是 News/DeleteConfirmed
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> DeleteConfirmed(Guid id)
+{
+    var news = await _context.News.FindAsync(id); //透過 id 找資料
+    if (news != null)
+    {
+        _context.News.Remove(news); //刪資料
+    }
+
+    await _context.SaveChangesAsync(); //儲存修改
+    return RedirectToAction(nameof(Index)); //返回 Index
+}
+```
