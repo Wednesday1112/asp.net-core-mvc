@@ -25,6 +25,10 @@
     - [Post 區塊修改](#post-區塊修改)
     - [結果](#結果)
 - [範例的 delete 功能](#範例的-delete-功能)
+- [標籤](#標籤)
+  - [HttpPost/HttpGet](#httpposthttpget)
+  - [ActionName()](#actionName)
+  - [Route()](#route)
 
 # MVC 架構
 <img width="593" height="207" alt="image" src="https://github.com/user-attachments/assets/4275666d-a3a1-4e08-a31c-c47db00e81ff" /><br/>
