@@ -831,3 +831,70 @@ public async Task<IActionResult> DeleteConfirmed(Guid id)
     return RedirectToAction(nameof(Index)); //返回 Index
 }
 ```
+
+# 標籤
+範例的 create edit delete 在 controller 第二區塊的開頭都有標籤<br/>
+<img width="384" height="292" alt="image" src="https://github.com/user-attachments/assets/7fbf181a-e2e8-40a4-8c1d-3fd1177de7d5" />
+<img width="303" height="283" alt="image" src="https://github.com/user-attachments/assets/67b1ca6c-2ee4-483b-bc87-075667746f09" />
+<img width="347" height="179" alt="image" src="https://github.com/user-attachments/assets/6c71fa77-11c5-42b9-926d-f10bbd4c6a8f" />
+
+## HttpPost/HttpGet
+如 [範例的 create 功能](#範例的create功能) 所說，是 Post 方法，他可以把 form 整包 post。使用 HttpPost 或 HttpGet 標籤讓同名函式可以並存
+```cs
+//上下可以並存，因為走不同方法
+[HttpGet]
+public async Task<IActionResult> Delete(Guid? id)
+{
+
+}
+
+[HttpPost]
+public async Task<IActionResult> Delete(Guid? id)
+{
+
+}
+```
+
+## ActionName()
+可以改 action([Program.cs (路由)](#programcs-路由)) 網址，讓函式跟網址不一樣，使兩個函式用同個網址，像是範例的 delete
+```cs
+[ActionName("Delete")] //可以單獨一框
+[HttpPost, ActionName("Delete")] //也可以在逗號後，同一框
+```
+
+## Route()
+改 route([Program.cs (路由)](#programcs-路由)) 網址，放在 class 外，就是整個 class 套用，放在函式前就是整個函式套用。會蓋掉 Program.cs 的規則，所以當使用這個標籤時，要注意位子跟後續網址有沒有給定規則。<br/>
+EX:
+```cs
+namespace Kcg.Controllers
+{
+    [Route("example2")] //在 class 外，整個 class 都套用
+    public class ExampleController : Controller
+    {
+        //localhost/example
+        [HttpGet]
+        public string Index()
+        {
+            return "Index";
+        }
+        
+        //localhost/example/delete (走 get)
+        [HttpGet("delete")]
+        public string Delete()
+        {
+            return "Delete";
+        }
+
+        //localhost/example/delete (走 post)
+        [HttpPost("delete")]
+        //localhost/example/delete2 多行每個都有效
+        [HttpPost("delete2")]
+        //也可以後面加 id
+        [HttpPost("delete/{id?}")]
+        public string DeletePost()
+        {
+            return "DeletePost";
+        }
+    }
+}
+```
