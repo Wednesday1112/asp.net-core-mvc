@@ -29,6 +29,8 @@
   - [HttpPost/HttpGet](#httpposthttpget)
   - [ActionName()](#actionName)
   - [Route()](#route)
+  - [關鍵字搜尋(取得GET參數)](#關鍵字搜尋取得get參數)
+  - [新增資料(取得POST參數)](#新增資料取得post參數)
 
 # MVC 架構
 <img width="593" height="207" alt="image" src="https://github.com/user-attachments/assets/4275666d-a3a1-4e08-a31c-c47db00e81ff" /><br/>
@@ -902,3 +904,203 @@ namespace Kcg.Controllers
     }
 }
 ```
+
+## 關鍵字搜尋(取得GET參數)
+建好 contorller 跟 view<br/>
+<img width="206" height="316" alt="image" src="https://github.com/user-attachments/assets/cbe4030c-8846-40de-8843-d3607c27fc00" /><br/>
+controller
+```cs
+namespace Kcg.Controllers
+{
+    public class News2Controller : Controller
+    {
+        private readonly KcgContext _context;
+
+        public News2Controller(KcgContext context) //引入資料庫
+        {
+            _context = context;
+        }
+
+        public IActionResult Index()
+        {
+            var result = from a in _context.News //抓資料
+                         join b in _context.Department on a.DepartmentId equals b.DepartmentId
+                         join c in _context.Employee on a.UpdateEmployeeId equals c.EmployeeId
+                         select new NewsDto
+                         {
+                             Click = a.Click,
+                             Enable = a.Enable,
+                             EndDateTime = a.EndDateTime,
+                             NewsId = a.NewsId,
+                             StartDateTime = a.StartDateTime,
+                             Title = a.Title,
+                             UpdateDateTime = a.UpdateDateTime,
+                             UpdateEmployeeName = c.Name,
+                             DepartmentName = b.Name
+                         };
+
+            return View(result.ToList()); //給view
+        }
+    }
+}
+```
+view，先用 hmtl，後面教 razor 語法再改
+```cshtml
+@model IEnumerable<NewsDto>
+
+@{
+    ViewData["Title"] = "Index2";
+}
+
+<h1>Index</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                標題
+            </th>
+            <th>
+                部門
+            </th>
+            <th>
+                開始時間
+            </th>
+            <th>
+                點擊率
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Title
+                </td>
+                <td>
+                    @item.DepartmentName
+                </td>
+                <td>
+                    @item.StartDateTime.ToString("yyyy-MM-dd")
+                </td>
+                <td>
+                    @item.Click
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+```
+試跑<br/>
+<img width="1296" height="312" alt="image" src="https://github.com/user-attachments/assets/c67e019b-102c-4dd7-97b0-40fc063030f0" /><br/>
+搜尋框，hmtl 寫法，之後教 Tag Helper 再改<br/>
+```cshtml
+<form action="/News2" method="get"> //submit 之後一樣在 News2 頁面，使用 get 方法
+    <input type="text" name="keyword" placeholder="請輸入標題" /> //輸入框
+    <button type="submit">搜尋</button>
+</form>
+```
+搜尋高雄<br/>
+<img width="745" height="484" alt="image" src="https://github.com/user-attachments/assets/51b1898f-d1a0-428c-898b-e1f7580a0e42" /><br/>
+取得 get 的參數
+```cs
+public IActionResult Index(string keyword) //這樣就能拿到了
+{
+    ...
+
+    if (!string.IsNullOrEmpty(keyword)) //有輸入
+    {
+        result = result.Where(x => x.Title.Contains(keyword)); //把要回傳的資料過濾
+    }
+
+    return View(result.ToList());
+}
+```
+結果<br/>
+<img width="599" height="353" alt="image" src="https://github.com/user-attachments/assets/fcb872d8-edda-44fb-8e6d-21a8ed9c93c8" />
+
+## 新增資料(取得POST參數)
+controller 新增兩段程式碼，Create() 兩個，一樣上面顯示下面按鈕執行
+```cs
+public IActionResult Create()
+{
+    return View();
+}
+
+[HttpPost]
+//news 格式為 NewsCreateDto，等一下 view 的輸入框 name 很重要，要跟 NewsCreateDto 裡的欄位名稱一樣他才抓的到
+public async Task<IActionResult> Create(NewsCreateDto news)
+{
+    if (ModelState.IsValid)
+    {
+        News insert = new News()
+        {
+            Title = news.Title,
+            Contents = news.Contents,
+            DepartmentId = news.DepartmentId,
+            StartDateTime = news.StartDateTime,
+            EndDateTime = news.EndDateTime,
+            Click = 0,
+            Enable = true,
+            InsertEmployeeId = 1,
+            UpdateEmployeeId = 1
+        };
+
+        _context.News.Add(insert);
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Index));
+    }
+    return View(news);
+}
+```
+Create 的 view<br/>
+<img width="194" height="68" alt="image" src="https://github.com/user-attachments/assets/8fbad92c-9f9c-4dec-ab6f-b9f407bcc0ba" /><br/>
+```cshtml
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>News</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" action="/News2/Create"> //走 post，submit 後去 Create() 下面區塊
+            <div class="form-group">
+                <label for="Title" class="control-label">Title</label>
+                <input name="Title" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="Contents" class="control-label">Contents</label>
+                <input name="Contents" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="DepartmentId" class="control-label">DepartmentId</label>
+                <input name="DepartmentId" type="number" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="StartDateTime" class="control-label">StartDateTime</label>
+                <input name="StartDateTime" type="datetime-local" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="EndDateTime" class="control-label">EndDateTime</label>
+                <input name="EndDateTime" type="datetime-local" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a href="/News2">Back to List</a>
+</div>
+```
+新增一筆資料後看一下 F12 的 Network，看 Create post 的 form 資料，controller 的 Create() 的 NewsCreateDto 就是抓這個來比對資料<br/>
+<img width="1547" height="400" alt="image" src="https://github.com/user-attachments/assets/ba0ec218-e2ff-46b2-86d0-7ede0c7d20e8" />
