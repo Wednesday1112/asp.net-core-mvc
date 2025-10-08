@@ -1135,6 +1135,7 @@ public IActionResult Create([FromRoute] string id, [FromQuery(Name = "id")] stri
 controller 要拿到資料首先要把欄位加進 DTO，有好幾種宣告方式:
 - 單一檔案: IFormFile
 - 複數檔案: IFormFileCollection、IEnumerable<IFormFile>、List<IFormFile>、ICollection<IFormFile>
+
 上面有宣告會收到複數檔案，所以使用 List<IFormFile>，如果這邊是宣告單一檔案，雖然不會錯，但他就只會接收第一個檔案
 ```cs
 namespace Kcg.Dtos
