@@ -1,4 +1,4 @@
-# asp.net core mvc 自學紀錄
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/df8ce9eb-57d3-47c5-b916-a29ac351c9ea" /># asp.net core mvc 自學紀錄
 [參考影片](https://www.youtube.com/watch?v=_oRJ8TNcHWo&list=PLneJIGUTIItsCaiHCd8Rte8kM0fIlyM2f&pp=0gcJCaIEOCosWNin)
 - [MVC 架構](#mvc-架構)
   - [Program.cs (路由)](#programcs-路由)
@@ -29,8 +29,11 @@
   - [HttpPost/HttpGet](#httpposthttpget)
   - [ActionName()](#actionName)
   - [Route()](#route)
-  - [關鍵字搜尋(取得GET參數)](#關鍵字搜尋取得get參數)
-  - [新增資料(取得POST參數)](#新增資料取得post參數)
+  - [關鍵字搜尋(取得GET參數)](#關鍵字搜尋取得get參數繫結)
+  - [新增資料(取得POST參數)](#新增資料取得post參數繫結)
+  - [資料繫結](#資料繫結)
+- [接收前端上傳的檔案](#接收前端上傳的檔案)
+- [Controller 的常用 Return()](#controller-的常用-return)
 
 # MVC 架構
 <img width="593" height="207" alt="image" src="https://github.com/user-attachments/assets/4275666d-a3a1-4e08-a31c-c47db00e81ff" /><br/>
@@ -905,7 +908,7 @@ namespace Kcg.Controllers
 }
 ```
 
-## 關鍵字搜尋(取得GET參數)
+## 關鍵字搜尋(取得GET參數繫結)
 建好 contorller 跟 view<br/>
 <img width="206" height="316" alt="image" src="https://github.com/user-attachments/assets/cbe4030c-8846-40de-8843-d3607c27fc00" /><br/>
 controller
@@ -1006,7 +1009,8 @@ view，先用 hmtl，後面教 razor 語法再改
 <img width="745" height="484" alt="image" src="https://github.com/user-attachments/assets/51b1898f-d1a0-428c-898b-e1f7580a0e42" /><br/>
 取得 get 的參數
 ```cs
-public IActionResult Index(string keyword) //這樣就能拿到了
+//這樣就能拿到 keyword 了，FromQuery 可加可不加，因為已經預設了。Query: 查詢字串，網址後面的 ?xxx
+public IActionResult Index([FromQuery]string keyword)
 {
     ...
 
@@ -1021,7 +1025,7 @@ public IActionResult Index(string keyword) //這樣就能拿到了
 結果<br/>
 <img width="599" height="353" alt="image" src="https://github.com/user-attachments/assets/fcb872d8-edda-44fb-8e6d-21a8ed9c93c8" />
 
-## 新增資料(取得POST參數)
+## 新增資料(取得POST參數繫結)
 controller 新增兩段程式碼，Create() 兩個，一樣上面顯示下面按鈕執行
 ```cs
 public IActionResult Create()
@@ -1030,8 +1034,8 @@ public IActionResult Create()
 }
 
 [HttpPost]
-//news 格式為 NewsCreateDto，等一下 view 的輸入框 name 很重要，要跟 NewsCreateDto 裡的欄位名稱一樣他才抓的到
-public async Task<IActionResult> Create(NewsCreateDto news)
+//news 格式為 NewsCreateDto，等一下 view 的輸入框 name 很重要，要跟 NewsCreateDto 裡的欄位名稱一樣他才抓的到，FromForm 可有可無，因為已經預設了
+public async Task<IActionResult> Create([FromForm]NewsCreateDto news)
 {
     if (ModelState.IsValid)
     {
@@ -1104,3 +1108,121 @@ Create 的 view<br/>
 ```
 新增一筆資料後看一下 F12 的 Network，看 Create post 的 form 資料，controller 的 Create() 的 NewsCreateDto 就是抓這個來比對資料<br/>
 <img width="1547" height="400" alt="image" src="https://github.com/user-attachments/assets/ba0ec218-e2ff-46b2-86d0-7ede0c7d20e8" />
+
+## 資料繫結
+繫結來源有優先順序，例如 FromRoute > FromQuery
+雖然繫結來源有預設，但還是盡量標出來
+當遇到同個函式兩個參數要用不同來源的資料繫結，但卻是同個名字時，可以這樣
+```cs
+public IActionResult Create([FromRoute] string id, [FromQuery(Name = "id")] string id2) //兩個資料繫結都是 id，但不同來源
+{
+    
+}
+```
+
+# 接收前端上傳的檔案
+在 create 頁面加上傳的選項<br/>
+<img width="883" height="803" alt="image" src="https://github.com/user-attachments/assets/e8f30702-3309-44a1-8e81-5e4c0d9b18d1" />
+```cshtml
+<form method="post" action="/News2/Create" enctype="multipart/form-data"> //要加後面這串後端才能編上傳的碼
+...
+<div class="form-group">
+    <label for="Files" class="control-label">Files</label>
+    <input name="Files" type="file" multiple class="form-control" /> //multiple 代表接收複數檔案
+</div>
+...
+```
+controller 要拿到資料首先要把欄位加進 DTO，有好幾種宣告方式:
+- 單一檔案: IFormFile
+- 複數檔案: IFormFileCollection、IEnumerable<IFormFile>、List<IFormFile>、ICollection<IFormFile>
+上面有宣告會收到複數檔案，所以使用 List<IFormFile>，如果這邊是宣告單一檔案，雖然不會錯，但他就只會接收第一個檔案
+```cs
+namespace Kcg.Dtos
+{
+    public class NewsCreateDto
+    {
+        ...
+
+        public List<IFormFile> Files { get; set; }
+    }
+}
+```
+最後 controller 設定檔案存哪裡，記得在 wwwroot 下建 uploads 資料夾
+```cs
+[HttpPost]
+public async Task<IActionResult> Create(NewsCreateDto news)
+{
+    if (ModelState.IsValid)
+    {
+        ...
+
+        foreach (var item in news.Files)
+        {
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads", item.FileName); //路徑 現在程式執行的資料夾/wwwroot/uploads，檔案名字不改
+
+            using (var stream = new FileStream(filePath, FileMode.Create)) //檔案資訊
+            {
+                await item.CopyToAsync(stream); //存進硬碟
+            }
+        }
+
+        ...
+    }
+    ...
+}
+```
+玩玩看<br/>
+<img width="474" height="571" alt="image" src="https://github.com/user-attachments/assets/db11bf6d-60dd-4710-8d8a-ae43ac286f31" /><br/>
+<img width="430" height="221" alt="image" src="https://github.com/user-attachments/assets/678e265f-29ce-4141-b922-7bd6b4bc1877" /><br/>
+<img width="698" height="119" alt="image" src="https://github.com/user-attachments/assets/94d9cea9-c678-4b07-aab0-43750edbf16f" />
+
+# Controller 的常用 Return()
+指向對應名稱的 view (Views/controller/Return)
+```cs
+public IActionResult Return()
+{
+    return View();
+}
+```
+指定指向某個 view (Views/controller/Demo)
+```cs
+public IActionResult Return()
+{
+    return View("Demo");
+}
+```
+帶參數 (model)
+```cs
+public IActionResult Return()
+{
+    return View("Demo"), model); //沒有指定去哪個 view 可以直接去掉，model 不動
+}
+```
+指定 action
+```cs
+public IActionResult Return()
+{
+    return RedirectToAction(nameof(Index)); //nameof(Index) = Index 名字本身
+}
+```
+跳轉網站
+```cs
+public IActionResult Return()
+{
+    return Redirect("https://www.google.com");
+}
+```
+回傳檔案
+```cs
+public IActionResult Return()
+{
+    return File(System.IO.File.ReadAllBytes(@"...路徑/檔案"), "text/plain", "檔案1.txt"); //(@"路徑 & 檔名", "檔案類型", "下載後顯示的檔名")
+}
+```
+找不到頁面
+```cs
+public IActionResult Return()
+{
+    return NotFound();
+}
+```
