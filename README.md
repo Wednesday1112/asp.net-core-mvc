@@ -1,4 +1,4 @@
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/df8ce9eb-57d3-47c5-b916-a29ac351c9ea" /># asp.net core mvc 自學紀錄
+# asp.net core mvc 自學紀錄
 [參考影片](https://www.youtube.com/watch?v=_oRJ8TNcHWo&list=PLneJIGUTIItsCaiHCd8Rte8kM0fIlyM2f&pp=0gcJCaIEOCosWNin)
 - [MVC 架構](#mvc-架構)
   - [Program.cs (路由)](#programcs-路由)
